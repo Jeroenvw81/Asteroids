@@ -9,23 +9,32 @@ def main():
     pygame.init()                                                           #initializes pygame
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))         #setting window to variables in constants
     clock = pygame.time.Clock()        
-    player = PlayerShape(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)                                     
+                                       
     dt = 0
-    
 
+    
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    PlayerShape.containers = (updatable, drawable)
+
+    player = PlayerShape(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  
 
     while True:
         for event in pygame.event.get():                                    #beginning of game loop, will check if user has closed the window and exits loop
             if event.type == pygame.QUIT:
                 return
         
+        updatable.update(dt)                                                #update game state
         
-        screen.fill("black")
-        player.draw(screen)        
-                                                
-        pygame.display.flip()                                               #refreshes the "black" screen at each loop
+        screen.fill("black")                                                #clear screen  
+        
+        for entity in drawable:                                             #draw the entities
+            entity.draw(screen)     
+        
+        pygame.display.flip()                                               #show the new frame
 
-        dt = clock.tick(60) / 1000                                          #limits fps to 60 /1000 = to convert from ms to s. It will pause the game loop until 1/60th of a second has passed.
+        dt = clock.tick(60) / 1000                                          #limits fps to 60 /1000 = to convert from ms to s. it calculates the new delta time
 
 if __name__ == "__main__":                                                  #only runs main() if main.py is called directly
     main()
