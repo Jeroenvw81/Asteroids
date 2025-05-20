@@ -4,6 +4,11 @@
 import pygame
 from constants import * #imports all of constants.py, not usually done, just the parts that are needed
 from player import PlayerShape
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+import sys
+from shot import Shot
+
 
 def main():
     pygame.init()                                                           #initializes pygame
@@ -15,6 +20,15 @@ def main():
     
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
+
+    Shot.containers = (shots, updatable, drawable)
+
 
     PlayerShape.containers = (updatable, drawable)
 
@@ -26,7 +40,13 @@ def main():
                 return
         
         updatable.update(dt)                                                #update game state
-        
+
+        for asteroid in asteroids:
+            if asteroid.collides_with(player):                              #calls the collides_with function to check for collision
+                print("Game over!")
+                sys.exit()
+                
+
         screen.fill("black")                                                #clear screen  
         
         for entity in drawable:                                             #draw the entities
