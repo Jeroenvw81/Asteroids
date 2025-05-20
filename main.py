@@ -29,7 +29,6 @@ def main():
 
     Shot.containers = (shots, updatable, drawable)
 
-
     PlayerShape.containers = (updatable, drawable)
 
     player = PlayerShape(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  
@@ -45,9 +44,14 @@ def main():
             if asteroid.collides_with(player):                              #calls the collides_with function to check for collision
                 print("Game over!")
                 sys.exit()
-                
-
-        screen.fill("black")                                                #clear screen  
+            
+            for shot in shots:
+                    if asteroid.collides_with(shot):
+                        asteroid.kill()
+                        shot.kill()
+            
+        screen.fill("black")                                                #clear screen
+        
         
         for entity in drawable:                                             #draw the entities
             entity.draw(screen)     
