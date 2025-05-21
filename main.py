@@ -31,7 +31,7 @@ def main():
 
     PlayerShape.containers = (updatable, drawable)
 
-    player = PlayerShape(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  
+    player = PlayerShape(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     while True:
         for event in pygame.event.get():                                    #beginning of game loop, will check if user has closed the window and exits loop
@@ -47,11 +47,10 @@ def main():
             
             for shot in shots:
                     if asteroid.collides_with(shot):
-                        asteroid.kill()
+                        asteroid.split()
                         shot.kill()
             
         screen.fill("black")                                                #clear screen
-        
         
         for entity in drawable:                                             #draw the entities
             entity.draw(screen)     
